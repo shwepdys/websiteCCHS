@@ -4,23 +4,26 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const fetch = require("node-fetch");
 
-app.use(cors({ origin: true }));
+const app = express();
+
+app.use(express.json());
+
 app.use(cors({
   origin: "https://websitecchs.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
-const app = express();
-app.use(express.json());
+
 app.options("*", cors());
 
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"));
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error(err));
 
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/games", require("./routes/games"));
 
-/* Basic proxy endpoint */
 app.get("/proxy", async (req, res) => {
   const url = req.query.url;
   if (!url) return res.send("No URL");
@@ -34,4 +37,6 @@ app.get("/proxy", async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Server running");
+});
