@@ -1,5 +1,5 @@
 // --- existing code for API, login, logout, addGame, playGame ---
-
+const API = "https://websitecchs.onrender.com/api";
 // Show sections
 function showAddGame() {
   document.getElementById("addGameSection").style.display = "block";
