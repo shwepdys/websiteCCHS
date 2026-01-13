@@ -5,426 +5,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel - WebsiteCCHS</title>
 <style>
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-
-body {
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-}
-
-header {
-background: rgba(255, 255, 255, 0.95);
-padding: 1rem 2rem;
-box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-
-.logo {
-font-size: 1.5rem;
-font-weight: bold;
-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-}
-
-nav {
-display: flex;
-gap: 1rem;
-align-items: center;
-}
-
-nav a {
-color: #333;
-text-decoration: none;
-padding: 0.5rem 1rem;
-border-radius: 5px;
-transition: background 0.3s;
-}
-
-nav a:hover {
-background: rgba(102, 126, 234, 0.1);
-}
-
-.admin-container {
-flex: 1;
-display: flex;
-max-width: 1400px;
-width: 100%;
-margin: 2rem auto;
-gap: 2rem;
-padding: 0 2rem;
-}
-
-.sidebar {
-background: white;
-border-radius: 10px;
-padding: 2rem;
-box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-width: 250px;
-height: fit-content;
-}
-
-.sidebar h3 {
-margin-bottom: 1.5rem;
-color: #333;
-font-size: 1.3rem;
-}
-
-.sidebar button {
-width: 100%;
-padding: 0.75rem;
-margin-bottom: 0.75rem;
-border: none;
-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-color: white;
-border-radius: 5px;
-cursor: pointer;
-font-size: 1rem;
-transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.sidebar button:hover {
-transform: translateY(-2px);
-box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-.sidebar button.active {
-background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-.main-content {
-flex: 1;
-background: white;
-border-radius: 10px;
-padding: 2rem;
-box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-
-.admin-form h2 {
-margin-bottom: 1.5rem;
-color: #333;
-font-size: 1.8rem;
-}
-
-.admin-form input,
-.admin-form textarea {
-width: 100%;
-padding: 0.75rem;
-margin-bottom: 1rem;
-border: 2px solid #e0e0e0;
-border-radius: 5px;
-font-size: 1rem;
-font-family: inherit;
-transition: border-color 0.3s;
-}
-
-.admin-form input:focus,
-.admin-form textarea:focus {
-outline: none;
-border-color: #667eea;
-}
-
-.admin-form button {
-padding: 0.75rem 2rem;
-border: none;
-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-color: white;
-border-radius: 5px;
-cursor: pointer;
-font-size: 1rem;
-transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.admin-form button:hover {
-transform: translateY(-2px);
-box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-.game-item {
-background: #f8f9fa;
-padding: 1.5rem;
-margin-bottom: 1rem;
-border-radius: 8px;
-border-left: 4px solid #667eea;
-display: flex;
-justify-content: space-between;
-align-items: center;
-transition: transform 0.2s;
-}
-
-.game-item:hover {
-transform: translateX(5px);
-}
-
-.game-info h3 {
-color: #333;
-margin-bottom: 0.5rem;
-}
-
-.game-info p {
-color: #666;
-font-size: 0.9rem;
-}
-
-.game-actions {
-display: flex;
-gap: 0.5rem;
-}
-
-.game-actions button {
-padding: 0.5rem 1rem;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 0.9rem;
-transition: transform 0.2s;
-}
-
-.btn-edit {
-background: #ffc107;
-color: #333;
-}
-
-.btn-delete {
-background: #dc3545;
-color: white;
-}
-
-.game-actions button:hover {
-transform: scale(1.05);
-}
-
-.logout-btn {
-padding: 0.5rem 1rem;
-border: 2px solid #667eea;
-background: transparent;
-color: #667eea;
-border-radius: 5px;
-cursor: pointer;
-font-size: 1rem;
-transition: all 0.3s;
-}
-
-.logout-btn:hover {
-background: #667eea;
-color: white;
-}
-
-footer {
-background: rgba(255, 255, 255, 0.95);
-text-align: center;
-padding: 1rem;
-box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-color: #666;
-}
-
-.success-message {
-background: #d4edda;
-color: #155724;
-padding: 1rem;
-border-radius: 5px;
-margin-bottom: 1rem;
-border-left: 4px solid #28a745;
-display: none;
-}
-
-.error-message {
-background: #f8d7da;
-color: #721c24;
-padding: 1rem;
-border-radius: 5px;
-margin-bottom: 1rem;
-border-left: 4px solid #dc3545;
-display: none;
-}
-
-@media (max-width: 768px) {
-.admin-container {
-flex-direction: column;
-}
-
-.sidebar {
-width: 100%;
-}
-}
+/* ... keep all your existing CSS ... */
 </style>
 </head>
 <body>
 <header>
-<div class="logo">WebsiteCCHS</div>
-<nav>
-<a href="index.html">Home</a>
-<button class="logout-btn" onclick="logout()">Logout</button>
-</nav>
+  <div class="logo">WebsiteCCHS</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </nav>
 </header>
+
 <div class="admin-container">
-<!-- Sidebar -->
-<aside class="sidebar">
-<h3>Admin Menu</h3>
-<button class="active" onclick="showAddGame()">Add Game</button>
-<button onclick="showGameList()">Game List</button>
-</aside>
-<!-- Main content -->
-<main class="main-content">
-<!-- Add Game Form -->
-<div id="addGameSection" class="admin-form">
-<h2>Add a Game</h2>
-<div class="success-message" id="successMessage">Game added successfully!</div>
-<div class="error-message" id="errorMessage">Please fill in all fields.</div>
-<input type="text" id="title" placeholder="Game Title">
-<textarea id="html" rows="8" placeholder="Paste HTML code here..."></textarea>
-<button onclick="addGame()">Add Game</button>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h3>Admin Menu</h3>
+    <button class="active" onclick="showAddGame()">Add Game</button>
+    <button onclick="showGameList()">Game List</button>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main-content">
+    <!-- Add Game Form -->
+    <div id="addGameSection" class="admin-form">
+      <h2>Add a Game</h2>
+      <div class="success-message" id="successMessage"></div>
+      <div class="error-message" id="errorMessage"></div>
+      <input type="text" id="title" placeholder="Game Title">
+      <textarea id="html" rows="8" placeholder="Paste HTML code here..."></textarea>
+      <button onclick="addGame()">Add Game</button>
+    </div>
+
+    <!-- Game List -->
+    <div id="gameListSection" class="admin-form" style="display:none;">
+      <h2>All Games</h2>
+      <div id="gameList"></div>
+    </div>
+  </main>
 </div>
-<!-- Game List -->
-<div id="gameListSection" class="admin-form" style="display:none;">
-<h2>All Games</h2>
-<div id="gameList"></div>
-</div>
-</main>
-</div>
+
 <footer>© 2026 WebsiteCCHS</footer>
 
-<script>
-// Sample data storage (in a real app, this would be a database)
-let games = JSON.parse(localStorage.getItem('games')) || [];
-
-function showAddGame() {
-document.getElementById('addGameSection').style.display = 'block';
-document.getElementById('gameListSection').style.display = 'none';
-updateActiveButton(0);
-hideMessages();
-}
-
-function showGameList() {
-document.getElementById('addGameSection').style.display = 'none';
-document.getElementById('gameListSection').style.display = 'block';
-updateActiveButton(1);
-loadGameList();
-}
-
-function updateActiveButton(index) {
-const buttons = document.querySelectorAll('.sidebar button');
-buttons.forEach((btn, i) => {
-if (i === index) {
-btn.classList.add('active');
-} else {
-btn.classList.remove('active');
-}
-});
-}
-
-function addGame() {
-const title = document.getElementById('title').value.trim();
-const html = document.getElementById('html').value.trim();
-
-if (!title || !html) {
-showError('Please fill in all fields.');
-return;
-}
-
-const game = {
-id: Date.now(),
-title: title,
-html: html,
-dateAdded: new Date().toLocaleDateString()
-};
-
-games.push(game);
-localStorage.setItem('games', JSON.stringify(games));
-
-// Clear form
-document.getElementById('title').value = '';
-document.getElementById('html').value = '';
-
-showSuccess('Game added successfully!');
-}
-
-function loadGameList() {
-const gameList = document.getElementById('gameList');
-
-if (games.length === 0) {
-gameList.innerHTML = '<p style="color: #666;">No games added yet.</p>';
-return;
-}
-
-gameList.innerHTML = games.map(game => `
-<div class="game-item">
-<div class="game-info">
-<h3>${game.title}</h3>
-<p>Added on: ${game.dateAdded}</p>
-</div>
-<div class="game-actions">
-<button class="btn-edit" onclick="editGame(${game.id})">Edit</button>
-<button class="btn-delete" onclick="deleteGame(${game.id})">Delete</button>
-</div>
-</div>
-`).join('');
-}
-
-function editGame(id) {
-const game = games.find(g => g.id === id);
-if (game) {
-document.getElementById('title').value = game.title;
-document.getElementById('html').value = game.html;
-deleteGame(id);
-showAddGame();
-}
-}
-
-function deleteGame(id) {
-if (confirm('Are you sure you want to delete this game?')) {
-games = games.filter(g => g.id !== id);
-localStorage.setItem('games', JSON.stringify(games));
-loadGameList();
-}
-}
-
-function logout() {
-if (confirm('Are you sure you want to logout?')) {
-window.location.href = 'index.html';
-}
-}
-
-function showSuccess(message) {
-hideMessages();
-const successMsg = document.getElementById('successMessage');
-successMsg.textContent = message;
-successMsg.style.display = 'block';
-setTimeout(() => {
-successMsg.style.display = 'none';
-}, 3000);
-}
-
-function showError(message) {
-hideMessages();
-const errorMsg = document.getElementById('errorMessage');
-errorMsg.textContent = message;
-errorMsg.style.display = 'block';
-setTimeout(() => {
-errorMsg.style.display = 'none';
-}, 3000);
-}
-
-function hideMessages() {
-document.getElementById('successMessage').style.display = 'none';
-document.getElementById('errorMessage').style.display = 'none';
-}
-
-// Load game list on page load if that section is visible
-if (document.getElementById('gameListSection').style.display !== 'none') {
-loadGameList();
-}
-</script>
+<script src="app.js"></script>
 </body>
 </html>
