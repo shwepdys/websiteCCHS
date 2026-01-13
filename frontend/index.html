@@ -1,26 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebsiteCCHS - Games</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebsiteCCHS - Games</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #667eea;
+  letter-spacing: 1px;
+}
+
+nav {
+  display: flex;
+  gap: 2rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #667eea;
+  transition: width 0.3s ease;
+}
+
+nav a:hover {
+  color: #667eea;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+.container {
+  flex: 1;
+  padding: 3rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeInDown 0.6s ease;
+}
+
+.page-header h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.page-header p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+}
+
+.search-bar {
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  position: relative;
+  animation: fadeInUp 0.6s ease;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  background-color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+  outline: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.game-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  animation: fadeIn 0.8s ease;
+}
+
+.game-card {
+  background-color: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  animation: slideUp 0.5s ease backwards;
+}
+
+.game-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.game-image {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-image::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.game-info {
+  padding: 1.5rem;
+}
+
+.game-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.game-description {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.game-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.game-category {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background-color: #f0f4ff;
+  color: #667eea;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.game-rating {
+  color: #ffa500;
+  font-weight: 600;
+}
+
+.loading {
+  text-align: center;
+  color: white;
+  font-size: 1.2rem;
+  padding: 3rem;
+}
+
+.loading::after {
+  content: '...';
+  animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60%, 100% { content: '...'; }
+}
+
+.empty-state {
+  text-align: center;
+  color: white;
+  padding: 4rem 2rem;
+}
+
+.empty-state h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+footer {
+  background-color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  padding: 1.5rem;
+  color: #666;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  margin-top: auto;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 1rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .game-container {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  nav {
+    gap: 1rem;
+  }
+  
+  nav a {
+    font-size: 0.9rem;
+  }
+  
+  header {
+    padding: 1rem;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
+  }
+}
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">WebsiteCCHS</div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="login.html">Admin Login</a>
-      <a href="admin.html">Admin Panel</a>
-    </nav>
-  </header>
+<header>
+<div class="logo">WebsiteCCHS</div>
+<nav>
+<a href="index.html">Home</a>
+<a href="login.html">Admin Login</a>
+<a href="admin.html">Admin Panel</a>
+</nav>
+</header>
 
-  <div class="container game-container" id="games">
-    <!-- Games will load here -->
-  </div>
+<div class="container">
+<div class="page-header">
+<h1>🎮 Game Library</h1>
+<p>Discover and play amazing games</p>
+</div>
 
-  <footer>© 2026 WebsiteCCHS</footer>
-  <script src="app.js"></script>
+<div class="search-bar">
+<input type="text" id="searchInput" placeholder="Search games...">
+</div>
+
+<div class="game-container" id="games">
+<div class="loading">Loading games</div>
+</div>
+</div>
+
+<footer>© 2026 WebsiteCCHS</footer>
+
+<script>
+// Your games array - add your games here
+let games = [];
+
+// Load games function
+function loadGames(gamesToDisplay = games) {
+  const container = document.getElementById('games');
+  
+  if (gamesToDisplay.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <h2>No games available</h2>
+        <p>Games will appear here once added</p>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = gamesToDisplay.map((game, index) => `
+    <div class="game-card" style="animation-delay: ${index * 0.1}s" onclick="playGame(${game.id})">
+      <div class="game-image">${game.emoji || '🎮'}</div>
+      <div class="game-info">
+        <div class="game-title">${game.title}</div>
+        <div class="game-description">${game.description}</div>
+        <div class="game-meta">
+          <span class="game-category">${game.category}</span>
+          <span class="game-rating">${game.rating}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Search functionality
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  const filtered = games.filter(game => 
+    game.title.toLowerCase().includes(searchTerm) ||
+    game.description.toLowerCase().includes(searchTerm) ||
+    game.category.toLowerCase().includes(searchTerm)
+  );
+  loadGames(filtered);
+});
+
+// Play game function - replace with your actual logic
+function playGame(gameId) {
+  console.log('Playing game:', gameId);
+  // Your existing game launch logic here
+}
+
+// Initialize
+loadGames();
+</script>
 </body>
 </html>

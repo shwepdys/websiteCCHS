@@ -1,29 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Login - WebsiteCCHS</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login - WebsiteCCHS</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #667eea;
+  letter-spacing: 1px;
+}
+
+nav {
+  display: flex;
+  gap: 2rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #667eea;
+  transition: width 0.3s ease;
+}
+
+nav a:hover {
+  color: #667eea;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.admin-form {
+  background-color: white;
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 420px;
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-form h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.admin-form input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+}
+
+.admin-form input:focus {
+  outline: none;
+  border-color: #667eea;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.admin-form button {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.admin-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.admin-form button:active {
+  transform: translateY(0);
+}
+
+footer {
+  background-color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  padding: 1.5rem;
+  color: #666;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 768px) {
+  nav {
+    gap: 1rem;
+  }
+  
+  nav a {
+    font-size: 0.9rem;
+  }
+  
+  .admin-form {
+    padding: 2rem;
+  }
+  
+  header {
+    padding: 1rem;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
+  }
+}
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">WebsiteCCHS</div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="login.html">Admin Login</a>
-      <a href="admin.html">Admin Panel</a>
-    </nav>
-  </header>
+<header>
+<div class="logo">WebsiteCCHS</div>
+<nav>
+<a href="index.html">Home</a>
+<a href="login.html">Admin Login</a>
+<a href="admin.html">Admin Panel</a>
+</nav>
+</header>
+<div class="container">
+<div class="admin-form">
+<h2>Admin Login</h2>
+<div class="form-group">
+<label for="username">Username</label>
+<input type="text" id="username" placeholder="Enter your username">
+</div>
+<div class="form-group">
+<label for="password">Password</label>
+<input type="password" id="password" placeholder="Enter your password">
+</div>
+<button onclick="loginAdmin()">Login</button>
+</div>
+</div>
+<footer>© 2026 WebsiteCCHS</footer>
+<script>
+// Placeholder for loginAdmin function
+function loginAdmin() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  
+  if (username && password) {
+    alert('Login function called');
+    // Your existing login logic here
+  } else {
+    alert('Please enter both username and password');
+  }
+}
 
-  <div class="container admin-form">
-    <h2>Admin Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="loginAdmin()">Login</button>
-  </div>
-
-  <footer>© 2026 WebsiteCCHS</footer>
-  <script src="app.js"></script>
+// Add Enter key support
+document.addEventListener('DOMContentLoaded', function() {
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => {
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        loginAdmin();
+      }
+    });
+  });
+});
+</script>
 </body>
 </html>
