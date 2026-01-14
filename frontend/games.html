@@ -540,14 +540,64 @@ function escapeHtml(text){
 }
 
 function playGame(id){
-  const game=games.find(g=>g._id===id);
-  if(!game)return;
-  const newWindow=window.open('','_blank');
+  const game = games.find(g => g._id === id);
+  if(!game) return;
+
+  const newWindow = window.open('', '_blank');
+
+  // Load previous progress if it exists
+  const savedProgress = localStorage.getItem(`WebsiteCCHS-${game._id}-progress`);
+  
+  // Use single quotes inside <script> to avoid breaking template literal
   newWindow.document.write(`
-    <!DOCTYPE html><html><head><title>${game.title}</title>
-    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0">
-    <style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:black} canvas,iframe,embed{width:100vw!important;height:100vh!important;display:block}</style>
-    </head><body>${game.html}</body></html>`);
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>${game.title}</title>
+      <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0">
+      <style>
+        html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:black}
+        canvas,iframe,embed{width:100vw!important;height:100vh!important;display:block}
+        #resetBtn{
+          position:fixed;top:10px;right:10px;z-index:9999;padding:0.5rem 1rem;
+          background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:8px;cursor:pointer;
+        }
+      </style>
+    </head>
+    <body>
+      ${game.html}
+      <button id="resetBtn">Reset Progress</button>
+      <script>
+        let progress = ${savedProgress || 'null'};
+
+        // Functions your game can call to save/load progress
+        window.getGameProgress = window.getGameProgress || (function(){ return progress; });
+        window.loadGameProgress = window.loadGameProgress || (function(p){ progress = p; console.log('Progress loaded:', progress); });
+
+        // Load saved progress on start
+        if(progress && window.loadGameProgress){
+          window.loadGameProgress(progress);
+        }
+
+        // Auto-save every 10 seconds
+        setInterval(function(){
+          if(window.getGameProgress){
+            progress = window.getGameProgress();
+            localStorage.setItem('WebsiteCCHS-${game._id}-progress', JSON.stringify(progress));
+          }
+        }, 10000);
+
+        // Reset progress button
+        document.getElementById('resetBtn').addEventListener('click', function(){
+          localStorage.removeItem('WebsiteCCHS-${game._id}-progress');
+          progress = null;
+          alert('Progress reset!');
+          if(window.loadGameProgress) window.loadGameProgress(progress);
+        });
+      <\/script>
+    </body>
+    </html>
+  `);
   newWindow.document.close();
 }
 
