@@ -3,604 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebsiteCCHS - Tests Library</title>
+<title>User Register - WebsiteCCHS</title>
 <style>
-/* ============================================
-   Global Styles
-   ============================================ */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* Basic styles for a clean form */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
   display: flex;
-  flex-direction: column;
-}
-
-/* ============================================
-   Header
-   ============================================ */
-header {
-  background: rgba(255, 255, 255, 0.98);
-  padding: 1.25rem 2rem;
-  display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  min-height: 100vh;
+  margin: 0;
 }
 
-.logo {
-  font-size: 1.75rem;
-  font-weight: 800;
+.admin-form {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  width: 350px;
+}
+
+.admin-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: -0.5px;
+  -webkit-text-fill-color: transparent;
 }
 
-nav {
-  display: flex;
-  gap: 2rem;
-}
-
-nav a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 600;
-  font-size: 0.95rem;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  transform: translateX(-50%);
-  transition: width 0.3s ease;
-}
-
-nav a:hover {
-  color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
-}
-
-nav a:hover::after {
-  width: 60%;
-}
-
-/* ============================================
-   Container
-   ============================================ */
-.container {
-  flex: 1;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem;
+.admin-form input {
   width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
 }
 
-/* ============================================
-   Page Header
-   ============================================ */
-.page-header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-  animation: fadeInDown 0.6s ease-out;
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.page-header h1 {
-  font-size: 3rem;
-  color: white;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  font-weight: 800;
-}
-
-.page-header p {
-  font-size: 1.25rem;
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  font-weight: 500;
-}
-
-/* ============================================
-   Search Bar
-   ============================================ */
-.search-bar {
-  margin-bottom: 2rem;
-  animation: fadeIn 0.6s ease-out 0.2s both;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.search-bar input {
+.admin-form button {
   width: 100%;
-  max-width: 600px;
-  padding: 1rem 1.5rem;
-  font-size: 1.05rem;
+  padding: 0.8rem;
+  border-radius: 10px;
   border: none;
-  border-radius: 50px;
-  background: white;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-  display: block;
-  margin: 0 auto;
-}
-
-.search-bar input:focus {
-  outline: none;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
-}
-
-.search-bar input::placeholder {
-  color: #aaa;
-}
-
-/* ============================================
-   Game Container
-   ============================================ */
-.game-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  animation: fadeIn 0.6s ease-out 0.4s both;
-}
-
-/* ============================================
-   Game Cards
-   ============================================ */
-.game-card {
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: bold;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  animation: slideUp 0.5s ease-out both;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.game-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
-}
-
-.game-image {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  height: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 5rem;
+  font-size: 1rem;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
 }
 
-.game-image::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.6s ease;
+.admin-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.game-card:hover .game-image::before {
-  left: 100%;
-}
-
-.game-card:hover .game-image {
-  transform: scale(1.1);
-}
-
-.game-info {
-  padding: 1.5rem;
-}
-
-.game-title {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 0.75rem;
-  line-height: 1.3;
-}
-
-.game-description {
-  color: #666;
-  font-size: 0.95rem;
+.success-message, .error-message {
+  display: none;
+  padding: 0.75rem;
   margin-bottom: 1rem;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.game-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.game-category {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 0.4rem 0.9rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  border-radius: 6px;
   font-weight: 600;
-  display: inline-block;
 }
 
-/* ============================================
-   Loading & Empty States
-   ============================================ */
-.loading {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 4rem 2rem;
-  font-size: 1.5rem;
-  color: white;
-  font-weight: 600;
-  animation: pulse 1.5s ease-in-out infinite;
+.success-message {
+  background: #d4edda;
+  color: #155724;
+  border-left: 4px solid #28a745;
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+.error-message {
+  background: #ffe6e6;
+  color: #dc3545;
+  border-left: 4px solid #dc3545;
 }
 
-.empty-state {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 4rem 2rem;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+p a {
+  color: #667eea;
+  text-decoration: none;
 }
 
-.empty-state h2 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 1rem;
-  font-weight: 700;
-}
-
-.empty-state p {
-  font-size: 1.1rem;
-  color: #666;
-}
-
-/* ============================================
-   Footer
-   ============================================ */
-footer {
-  background: rgba(255, 255, 255, 0.98);
-  text-align: center;
-  padding: 1.5rem;
-  color: #666;
-  font-size: 0.9rem;
-  font-weight: 500;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  margin-top: 3rem;
-}
-
-/* ============================================
-   Responsive Design
-   ============================================ */
-@media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-  }
-
-  nav {
-    gap: 1rem;
-  }
-
-  nav a {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.8rem;
-  }
-
-  .container {
-    padding: 1.5rem 1rem;
-  }
-
-  .page-header h1 {
-    font-size: 2.25rem;
-  }
-
-  .page-header p {
-    font-size: 1.1rem;
-  }
-
-  .game-container {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .search-bar input {
-    font-size: 1rem;
-    padding: 0.875rem 1.25rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .logo {
-    font-size: 1.5rem;
-  }
-
-  nav {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-
-  .page-header h1 {
-    font-size: 1.85rem;
-  }
-
-  .page-header p {
-    font-size: 1rem;
-  }
-
-  .game-container {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-
-  .game-image {
-    height: 150px;
-    font-size: 4rem;
-  }
-
-  .game-info {
-    padding: 1.25rem;
-  }
-
-  .game-title {
-    font-size: 1.2rem;
-  }
-}
-
-/* ============================================
-   Accessibility
-   ============================================ */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-.game-card:focus {
-  outline: 3px solid #667eea;
-  outline-offset: 4px;
+p a:hover {
+  text-decoration: underline;
 }
 </style>
 </head>
 <body>
-<header>
-<div class="logo">WebsiteCCHS</div>
-<nav>
-  <a href="index.html">Home</a>
-  <a href="login.html" id="loginLink">Login</a>
-  <a href="admin.html" id="adminLink" style="display:none;">Admin Panel</a>
-  <a href="#" id="logoutLink" style="display:none;">Logout</a>
-</nav>
+<div class="admin-form">
+<h2>Register User</h2>
 
-</header>
+<div class="success-message" id="successMessage"></div>
+<div class="error-message" id="errorMessage"></div>
 
-<div class="container">
-<div class="page-header">
-<h1>📄 Test Library</h1>
-<p>Study and get ready for the next test!</p>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="registerUser()">Register</button>
+
+<p style="text-align:center; margin-top:1rem;">
+  Already have an account? <a href="login.html">Login</a>
+</p>
 </div>
-
-<div class="search-bar">
-<input type="text" id="searchInput" placeholder="Search games...">
-</div>
-
-<div class="game-container" id="games">
-<div class="loading">Loading games...</div>
-</div>
-</div>
-
-<footer>For requests: uorxh@hi2.in</footer>
 
 <script>
-const API = "https://websitecchs.onrender.com/api";
-const token = localStorage.getItem('token');
-let games = [];
-
-async function fetchGames() {
-  const container = document.getElementById('games');
-  container.innerHTML = '<div class="loading">Loading games...</div>';
-  
-  try {
-    const res = await fetch(`${API}/games`);
-    if (!res.ok) throw new Error('Failed to fetch games');
-    
-    games = await res.json();
-    loadGames(games);
-  } catch (err) {
-    console.error(err);
-    container.innerHTML = `
-      <div class="empty-state">
-        <h2>Error loading games</h2>
-        <p>Try refreshing the page.</p>
-      </div>
-    `;
+  // If user already has a token, redirect to the game page (or dashboard)
+  const token = localStorage.getItem("token");
+  if (token) {
+    window.location.href = "games.html"; // or user dashboard
   }
+
+const API = "https://websitecchs.onrender.com/api";
+
+function isValidEmail(email) {
+  // Simple email regex
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-function loadGames(gamesToDisplay = games) {
-  const container = document.getElementById('games');
-  
-  if (gamesToDisplay.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <h2>No games available</h2>
-        <p>Games will appear here once added</p>
-      </div>
-    `;
+async function registerUser() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const successMessage = document.getElementById("successMessage");
+  const errorMessage = document.getElementById("errorMessage");
+
+  successMessage.style.display = "none";
+  errorMessage.style.display = "none";
+
+  if (!username || !password) {
+    errorMessage.textContent = "Please enter both email and password";
+    errorMessage.style.display = "block";
     return;
   }
-  
-  container.innerHTML = gamesToDisplay.map((game, index) => `
-    <div class="game-card" style="animation-delay: ${index * 0.1}s" onclick="playGame('${game._id}')" tabindex="0" role="button" aria-label="Play ${escapeHtml(game.title)}">
-      <div class="game-image">📄</div>
-      <div class="game-info">
-        <div class="game-title">${escapeHtml(game.title)}</div>
-        <div class="game-description">${escapeHtml(game.description || 'No description available')}</div>
-        <div class="game-meta">
-          <span class="game-category">${escapeHtml(game.category || 'Uncategorized')}</span>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
 
-document.getElementById('searchInput').addEventListener('input', function(e) {
-  const searchTerm = e.target.value.toLowerCase();
-  const filtered = games.filter(game => 
-    game.title.toLowerCase().includes(searchTerm) ||
-    (game.description && game.description.toLowerCase().includes(searchTerm)) ||
-    (game.category && game.category.toLowerCase().includes(searchTerm))
-  );
-  loadGames(filtered);
-});
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-function playGame(id) {
-  const game = games.find(g => g._id === id);
-  if (!game) return;
-
-  const newWindow = window.open('', '_blank');
-
-  newWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>${game.title}</title>
-      <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
-      <style>
-        html, body {
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          background: black;
-        }
-
-        canvas, iframe, embed {
-          width: 100vw !important;
-          height: 100vh !important;
-          display: block;
-        }
-      </style>
-    </head>
-    <body>
-      ${game.html}
-    </body>
-    </html>
-  `);
-
-  newWindow.document.close();
-}
-
-
-fetchGames();
-</script>
-
-<script>
-  const tokenCheck = localStorage.getItem("token");
-
-  const loginLink = document.getElementById("loginLink");
-  const adminLink = document.getElementById("adminLink");
-  const logoutLink = document.getElementById("logoutLink");
-
-  if (tokenCheck) {
-    loginLink.style.display = "none";
-    adminLink.style.display = "inline-block";
-    logoutLink.style.display = "inline-block";
-  } else {
-    loginLink.style.display = "inline-block";
-    adminLink.style.display = "none";
-    logoutLink.style.display = "none";
+  if (!isValidEmail(username)) {
+    errorMessage.textContent = "Please enter a valid email address";
+    errorMessage.style.display = "block";
+    return;
   }
 
-  logoutLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    localStorage.removeItem("token");
-    window.location.reload();
-  });
+  try {
+    const res = await fetch(`${API}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }) // role is forced to 'user' in backend
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message || "Registration failed");
+
+    successMessage.textContent = data.message;
+    successMessage.style.display = "block";
+
+    // Clear inputs
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+
+  } catch (err) {
+    errorMessage.textContent = err.message;
+    errorMessage.style.display = "block";
+  }
+}
 </script>
 </body>
 </html>
