@@ -21,25 +21,25 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <h3>Admin Menu</h3>
-    <button class="active" onclick="showAddGame()">Add Game</button>
-    <button onclick="showGameList()">Game List</button>
+    <button class="active" onclick="showAddGame()">Add Test</button>
+    <button onclick="showGameList()">Test List</button>
   </aside>
 
   <!-- Main content -->
   <main class="main-content">
     <!-- Add Game Form -->
     <div id="addGameSection" class="admin-form">
-      <h2>Add a Game</h2>
+      <h2>Add a Test</h2>
       <div class="success-message" id="successMessage"></div>
       <div class="error-message" id="errorMessage"></div>
       <input type="text" id="title" placeholder="Game Title">
       <textarea id="html" rows="8" placeholder="Paste HTML code here..."></textarea>
-      <button onclick="addGame()">Add Game</button>
+      <button onclick="addGame()">Add Test</button>
     </div>
 
     <!-- Game List -->
     <div id="gameListSection" class="admin-form" style="display:none;">
-      <h2>All Games</h2>
+      <h2>All Tests</h2>
       <div id="gameList"></div>
     </div>
   </main>

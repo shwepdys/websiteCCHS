@@ -91,9 +91,9 @@ async function addGame() {
       body: JSON.stringify({ title, html })
     });
 
-    if (!res.ok) throw new Error("Failed to add game");
+    if (!res.ok) throw new Error("Failed to add test");
 
-    showNotification("Game added successfully!", "success");
+    showNotification("Test added successfully!", "success");
     document.getElementById("title").value = "";
     document.getElementById("html").value = "";
     loadGameList();
@@ -107,20 +107,20 @@ async function addGame() {
 async function loadGameList() {
   const listContainer = document.getElementById("gameList");
   const token = getToken();
-  listContainer.innerHTML = "<p>Loading games...</p>";
+  listContainer.innerHTML = "<p>Loading tests...</p>";
 
   try {
     const res = await fetch(`${API}/games`, {
       headers: { "Authorization": `Bearer ${token}` }
     });
 
-    if (!res.ok) throw new Error("Failed to load games");
+    if (!res.ok) throw new Error("Failed to load tests");
 
     const games = await res.json();
     listContainer.innerHTML = "";
 
     if (!games.length) {
-      listContainer.innerHTML = "<p>No games added yet.</p>";
+      listContainer.innerHTML = "<p>No tests added yet.</p>";
       return;
     }
 
@@ -144,7 +144,7 @@ async function loadGameList() {
 }
 
 async function deleteGame(id) {
-  if (!confirm("Are you sure you want to delete this game?")) return;
+  if (!confirm("Are you sure you want to delete this test?")) return;
   const token = getToken();
 
   try {
@@ -152,9 +152,9 @@ async function deleteGame(id) {
       method: "DELETE",
       headers: { "Authorization": `Bearer ${token}` }
     });
-    if (!res.ok) throw new Error("Failed to delete game");
+    if (!res.ok) throw new Error("Failed to delete test");
 
-    showNotification("Game deleted!", "success");
+    showNotification("Test deleted!", "success");
     loadGameList();
   } catch (err) {
     console.error(err);
@@ -184,8 +184,8 @@ async function editGame(id) {
       body: JSON.stringify({ title: newTitle, html: newHtml })
     });
 
-    if (!updateRes.ok) throw new Error("Failed to update game");
-    showNotification("Game updated!", "success");
+    if (!updateRes.ok) throw new Error("Failed to update test");
+    showNotification("Test updated!", "success");
     loadGameList();
 
   } catch (err) {

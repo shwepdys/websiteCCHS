@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebsiteCCHS - Games</title>
+<title>WebsiteCCHS</title>
 <style>
 /* ... keep all your existing CSS ... */
 </style>
@@ -21,7 +21,7 @@
 <div class="container">
   <div class="page-header">
     <h1>🎮 Game Library</h1>
-    <p>Discover and play amazing games</p>
+    <p>Study and get ready for the next test!</p>
   </div>
 
   <div class="search-bar">
@@ -29,7 +29,7 @@
   </div>
 
   <div class="game-container" id="games">
-    <div class="loading">Loading games</div>
+    <div class="loading">Loading tests</div>
   </div>
 </div>
 
@@ -52,7 +52,7 @@ async function fetchGames() {
 
   try {
     const res = await fetch(`${API}/games`);
-    if (!res.ok) throw new Error('Failed to fetch games');
+    if (!res.ok) throw new Error('Failed to fetch tests');
     games = await res.json();
 
     loadGames(games);
@@ -83,7 +83,7 @@ function loadGames(gamesToDisplay = games) {
 
   container.innerHTML = gamesToDisplay.map((game, index) => `
     <div class="game-card" style="animation-delay: ${index * 0.1}s" onclick="playGame('${game._id}')">
-      <div class="game-image">🎮</div>
+      <div class="game-image">📄</div>
       <div class="game-info">
         <div class="game-title">${escapeHtml(game.title)}</div>
         <div class="game-description">${escapeHtml(game.description || '')}</div>
