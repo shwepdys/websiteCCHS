@@ -24,12 +24,12 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true }); // automatically adds createdAt & updatedAt
 
 // Pre-save hook to hash password
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return; // no next() needed
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
-  next();
 });
+
 
 // Method to compare password during login
 userSchema.methods.matchPassword = function (enteredPassword) {
