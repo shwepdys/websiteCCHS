@@ -1,21 +1,48 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const router = express.Router();
 
-// TEMP admin credentials (you can later connect this to MongoDB)
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "10191805iP";
+// TEMP in-memory store
+const users = []; // will store both admins and regular users
 
-router.post("/login", (req, res) => {
+// Register
+router.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
-  if (username !== ADMIN_USER || password !== ADMIN_PASS) {
-    return res.status(401).json({ message: "Invalid credentials" });
+  if (!username || !password) {
+    return res.status(400).json({ message: "Email and password required" });
   }
 
+  // Check valid email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(username)) {
+    return res.status(400).json({ message: "Invalid email address" });
+  }
+
+  if (users.find(u => u.username === username)) {
+    return res.status(400).json({ message: "Email already registered" });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  users.push({ username, password: hashedPassword, role: "user" });
+
+  res.json({ message: "User registered successfully" });
+});
+
+// Login
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  const user = users.find(u => u.username === username);
+  if (!user) return res.status(401).json({ message: "Invalid credentials" });
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+
   const token = jwt.sign(
-    { username },
+    { username, role: user.role },
     process.env.JWT_SECRET || "10191805iP",
     { expiresIn: "2h" }
   );
