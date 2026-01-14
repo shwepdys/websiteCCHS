@@ -443,10 +443,12 @@ footer {
 <header>
 <div class="logo">WebsiteCCHS</div>
 <nav>
-<a href="index.html">Home</a>
-<a href="login.html">Admin Login</a>
-<a href="admin.html">Admin Panel</a>
+  <a href="index.html">Home</a>
+  <a href="login.html" id="loginLink">Login</a>
+  <a href="admin.html" id="adminLink" style="display:none;">Admin Panel</a>
+  <a href="#" id="logoutLink" style="display:none;">Logout</a>
 </nav>
+
 </header>
 
 <div class="container">
@@ -575,6 +577,30 @@ function playGame(id) {
 
 
 fetchGames();
+</script>
+
+<script>
+  const tokenCheck = localStorage.getItem("token");
+
+  const loginLink = document.getElementById("loginLink");
+  const adminLink = document.getElementById("adminLink");
+  const logoutLink = document.getElementById("logoutLink");
+
+  if (tokenCheck) {
+    loginLink.style.display = "none";
+    adminLink.style.display = "inline-block";
+    logoutLink.style.display = "inline-block";
+  } else {
+    loginLink.style.display = "inline-block";
+    adminLink.style.display = "none";
+    logoutLink.style.display = "none";
+  }
+
+  logoutLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    window.location.reload();
+  });
 </script>
 </body>
 </html>
