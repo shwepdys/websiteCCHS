@@ -726,7 +726,11 @@ footer {
 <script src="app.js"></script>
 
 <script>
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
+  if (!token) {
+    // User is not logged in, redirect to login page
+    window.location.href = 'login.html';
+  }
 
   const loginLink = document.getElementById("loginLink");
   const adminLink = document.getElementById("adminLink");
