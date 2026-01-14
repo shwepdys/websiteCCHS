@@ -222,6 +222,12 @@ button:active {
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* ============================================
    Footer
    ============================================ */
@@ -336,7 +342,7 @@ footer {
 <div class="form-group">
 <div id="errorMessage"></div>
 </div>
-<button onclick="loginAdmin()">Login</button>
+<button onclick="loginAdmin()" id="loginBtn">Login</button>
 </div>
 </div>
 
@@ -349,6 +355,7 @@ async function loginAdmin() {
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value.trim();
   const errorMessage = document.getElementById('errorMessage');
+  const loginBtn = document.getElementById('loginBtn');
   
   errorMessage.style.display = 'none';
   
@@ -358,12 +365,22 @@ async function loginAdmin() {
     return;
   }
   
+  // Disable button during request
+  loginBtn.disabled = true;
+  loginBtn.textContent = 'Logging in...';
+  
   try {
     const res = await fetch(`${API}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
     });
+    
+    // Check if response is JSON
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Server error: Invalid response format. Please check if the API endpoint is correct.');
+    }
     
     const data = await res.json();
     
@@ -374,9 +391,22 @@ async function loginAdmin() {
     localStorage.setItem('token', data.token);
     window.location.href = 'admin.html';
   } catch (err) {
-    console.error(err);
-    errorMessage.textContent = err.message;
+    console.error('Login error:', err);
+    
+    // Better error messages
+    let errorText = err.message;
+    if (err.message.includes('Failed to fetch')) {
+      errorText = 'Cannot connect to server. Please check your internet connection.';
+    } else if (err.message.includes('404')) {
+      errorText = 'Login endpoint not found. Please contact administrator.';
+    }
+    
+    errorMessage.textContent = errorText;
     errorMessage.style.display = 'block';
+    
+    // Re-enable button
+    loginBtn.disabled = false;
+    loginBtn.textContent = 'Login';
   }
 }
 
