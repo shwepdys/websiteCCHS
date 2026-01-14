@@ -2,18 +2,16 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
-
 const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "https://websitecchs.vercel.app", // <-- your frontend URL
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  origin: "https://websitecchs.vercel.app",
+  credentials: true
 }));
 
-
 app.use(express.json());
+
 
 // Routes (THIS IS CRITICAL)
 app.use("/api/auth", require("./routes/auth"));
