@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const Admin = require("../models/Admin");
 
 const router = express.Router();
 
@@ -28,27 +29,32 @@ router.post("/register", async (req, res) => {
 // Login
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
-  console.log("Login attempt:", username);
 
-  const user = await User.findOne({ username });
-  if (!user) {
-    console.log("User not found");
+  // 1. Check admin first
+  let account = await Admin.findOne({ username });
+  let role = "admin";
+
+  // 2. If not admin, check users
+  if (!account) {
+    account = await User.findOne({ username });
+    role = "user";
+  }
+
+  if (!account) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  const match = await bcrypt.compare(password, user.password);
+  const match = await bcrypt.compare(password, account.password);
   if (!match) {
-    console.log("Password mismatch");
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
   const token = jwt.sign(
-    { id: user._id, username: user.username, role: user.role },
+    { id: account._id, username: account.username, role },
     process.env.JWT_SECRET || "10191805iP",
     { expiresIn: "2h" }
   );
 
-  console.log("Login successful, sending token");
   res.json({ token });
 });
 
