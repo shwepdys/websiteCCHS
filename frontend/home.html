@@ -470,14 +470,22 @@ footer {
 
 <script>
 const API = "https://websitecchs.onrender.com/api";
-const token = localStorage.getItem("token");
-if (!token) {
-  window.location.href = "index.html"; // redirect to login/register page
+let token = localStorage.getItem("token");
+let userRole = "user";
+
+try {
+  if (token) {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    userRole = payload.role || "user";
+  } else {
+    window.location.href = "index.html"; // redirect if no token
+  }
+} catch(e) {
+  console.warn("Invalid token, redirecting");
+  localStorage.removeItem("token");
+  window.location.href = "index.html";
 }
 
-// Optional: decode JWT to get role
-const payload = JSON.parse(atob(token.split('.')[1]));
-const userRole = payload.role || "user"; // defaults to user
 let games = [];
 
 async function fetchGames() {
@@ -486,54 +494,36 @@ async function fetchGames() {
   
   try {
     const res = await fetch(`${API}/games`, {
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer " + token
-  }
-});
+      headers: token ? { "Content-Type": "application/json", "Authorization": "Bearer " + token } : { "Content-Type": "application/json" }
+    });
     if (!res.ok) throw new Error('Failed to fetch games');
-    
     games = await res.json();
     loadGames(games);
-  } catch (err) {
+  } catch(err) {
     console.error(err);
-    container.innerHTML = `
-      <div class="empty-state">
-        <h2>Error loading games</h2>
-        <p>Try refreshing the page.</p>
-      </div>
-    `;
+    container.innerHTML = `<div class="empty-state"><h2>Error loading tests</h2><p>Try refreshing the page.</p></div>`;
   }
 }
 
 function loadGames(gamesToDisplay = games) {
   const container = document.getElementById('games');
-  
   if (gamesToDisplay.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <h2>No games available</h2>
-        <p>Games will appear here once added</p>
-      </div>
-    `;
+    container.innerHTML = `<div class="empty-state"><h2>No tests available</h2><p>Tests will appear here once added</p></div>`;
     return;
   }
-  
-  container.innerHTML = gamesToDisplay.map((game, index) => `
-    <div class="game-card" style="animation-delay: ${index * 0.1}s" onclick="playGame('${game._id}')" tabindex="0" role="button" aria-label="Play ${escapeHtml(game.title)}">
+  container.innerHTML = gamesToDisplay.map((game,index) => `
+    <div class="game-card" style="animation-delay:${index*0.1}s" onclick="playGame('${game._id}')" tabindex="0" role="button" aria-label="Play ${escapeHtml(game.title)}">
       <div class="game-image">📄</div>
       <div class="game-info">
         <div class="game-title">${escapeHtml(game.title)}</div>
-        <div class="game-description">${escapeHtml(game.description || 'No description available')}</div>
-        <div class="game-meta">
-          <span class="game-category">${escapeHtml(game.category || 'Uncategorized')}</span>
-        </div>
+        <div class="game-description">${escapeHtml(game.description||'No description available')}</div>
+        <div class="game-meta"><span class="game-category">${escapeHtml(game.category||'Uncategorized')}</span></div>
       </div>
     </div>
   `).join('');
 }
 
-document.getElementById('searchInput').addEventListener('input', function(e) {
+document.getElementById('searchInput').addEventListener('input', function(e){
   const searchTerm = e.target.value.toLowerCase();
   const filtered = games.filter(game => 
     game.title.toLowerCase().includes(searchTerm) ||
@@ -543,82 +533,46 @@ document.getElementById('searchInput').addEventListener('input', function(e) {
   loadGames(filtered);
 });
 
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
+function escapeHtml(text){
+  const div=document.createElement('div');
+  div.textContent=text;
   return div.innerHTML;
 }
 
-function playGame(id) {
-  const game = games.find(g => g._id === id);
-  if (!game) return;
-
-  const newWindow = window.open('', '_blank');
-
+function playGame(id){
+  const game=games.find(g=>g._id===id);
+  if(!game)return;
+  const newWindow=window.open('','_blank');
   newWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>${game.title}</title>
-      <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
-      <style>
-        html, body {
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          background: black;
-        }
-
-        canvas, iframe, embed {
-          width: 100vw !important;
-          height: 100vh !important;
-          display: block;
-        }
-      </style>
-    </head>
-    <body>
-      ${game.html}
-    </body>
-    </html>
-  `);
-
+    <!DOCTYPE html><html><head><title>${game.title}</title>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0">
+    <style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:black} canvas,iframe,embed{width:100vw!important;height:100vh!important;display:block}</style>
+    </head><body>${game.html}</body></html>`);
   newWindow.document.close();
 }
 
-
 fetchGames();
-</script>
 
-<script>
-  const tokenCheck = localStorage.getItem("token");
+// Navbar login/logout/admin
+const loginLink=document.getElementById("loginLink");
+const adminLink=document.getElementById("adminLink");
+const logoutLink=document.getElementById("logoutLink");
 
-  const loginLink = document.getElementById("loginLink");
-  const adminLink = document.getElementById("adminLink");
-  const logoutLink = document.getElementById("logoutLink");
-
-  if (token) {
-  loginLink.style.display = "none";
-  logoutLink.style.display = "inline-block";
-
-  if (userRole === "admin") {
-    adminLink.style.display = "inline-block";
-  } else {
-    adminLink.style.display = "none";
-  }
-
+if(token){
+  loginLink.style.display="none";
+  logoutLink.style.display="inline-block";
+  adminLink.style.display=userRole==="admin"?"inline-block":"none";
 } else {
-  loginLink.style.display = "inline-block";
-  adminLink.style.display = "none";
-  logoutLink.style.display = "none";
+  loginLink.style.display="inline-block";
+  logoutLink.style.display="none";
+  adminLink.style.display="none";
 }
 
-  logoutLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    localStorage.removeItem("token");
-    window.location.reload();
-  });
+logoutLink.addEventListener("click",(e)=>{
+  e.preventDefault();
+  localStorage.removeItem("token");
+  window.location.reload();
+});
 </script>
 </body>
 </html>
