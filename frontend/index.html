@@ -94,6 +94,7 @@ body.dark input {
 
 .remember-wrapper {
     display: flex;
+    justify-content: flex-end; /* push to right */
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 1rem;
@@ -117,12 +118,32 @@ button {
     right: 1rem;
     cursor: pointer;
     font-weight: 600;
-    color: #667eea;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: none;
+    background: #f0f0f0;
+    color: #333;
+    transition: all 0.3s;
+}
+
+.dark-toggle:hover {
+    background: #667eea;
+    color: white;
+}
+
+body.dark .dark-toggle {
+    background: #333;
+    color: #f0f0f0;
+}
+
+body.dark .dark-toggle:hover {
+    background: #764ba2;
+    color: white;
 }
 </style>
 </head>
 <body>
-<div class="dark-toggle" id="darkToggle">🌙</div>
+<button class="dark-toggle" id="darkToggle">Toggle Dark Mode</button>
 
 <div class="form-container">
   <h2 id="formTitle">Register</h2>
@@ -135,8 +156,7 @@ button {
   </div>
 
   <div class="remember-wrapper">
-    <input type="checkbox" id="rememberMe">
-    <label for="rememberMe">Remember Me</label>
+    <label><input type="checkbox" id="rememberMe"> Remember Me</label>
   </div>
 
   <button id="submitBtn">Register</button>
