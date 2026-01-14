@@ -18,6 +18,9 @@
 
 
   .form-container {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* ensures padding doesn’t add to width */
     background: white;
     padding: 2.5rem 2rem;
     border-radius: 16px;
@@ -43,7 +46,9 @@
     border: 2px solid #e0e0e0;
     border-radius: 10px;
     font-size: 1rem;
-  }
+    display: block; /* ensures full width */
+}
+
 
   button {
     width: 100%;
