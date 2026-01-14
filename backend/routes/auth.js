@@ -19,46 +19,50 @@ router.post("/register", async (req, res) => {
   const existingUser = await User.findOne({ username });
   if (existingUser) return res.status(400).json({ message: "Email already registered" });
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = new User({ username, password: hashedPassword, role: "user" });
+  const user = new User({ username, password, role: "user" });
   await user.save();
+
 
   res.json({ message: "User registered successfully" });
 });
 
 // Login
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  try {
+    const { username, password } = req.body;
 
-  // 1. Check admin first
-  let account = await Admin.findOne({ username });
-  let role = "admin";
+    // 1. Check admin first
+    let account = await Admin.findOne({ username });
+    let role = "admin";
 
-  // 2. If not admin, check users
-  if (!account) {
-    account = await User.findOne({ username });
-    role = "user";
+    // 2. If not admin, check users
+    if (!account) {
+      account = await User.findOne({ username });
+      role = "user";
+    }
+
+    if (!account) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // ✅ FIXED HERE
+    const match = await account.matchPassword(password);
+    if (!match) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      { id: account._id, username: account.username, role },
+      process.env.JWT_SECRET || "10191805iP",
+      { expiresIn: "2h" }
+    );
+
+    res.json({ token });
+
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({ message: "Server error" });
   }
-
-  if (!account) {
-    return res.status(401).json({ message: "Invalid credentials" });
-  }
-
-  const match = await User.matchPassword(password);
-  if (!match) {
-    return res.status(401).json({ message: "Invalid credentials" });
-  }
-  console.log("Password from request:", password);
-  console.log("Password in DB:", user.password);
-
-  const token = jwt.sign(
-    { id: account._id, username: account.username, role },
-    process.env.JWT_SECRET || "10191805iP",
-    { expiresIn: "2h" }
-  );
-
-  res.json({ token });
 });
-
 
 module.exports = router;
