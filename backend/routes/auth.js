@@ -5,7 +5,7 @@ const router = express.Router();
 
 // TEMP admin credentials (you can later connect this to MongoDB)
 const ADMIN_USER = "admin";
-const ADMIN_PASS = "password123";
+const ADMIN_PASS = "10191805iP";
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
@@ -16,7 +16,7 @@ router.post("/login", (req, res) => {
 
   const token = jwt.sign(
     { username },
-    process.env.JWT_SECRET || "secret123",
+    process.env.JWT_SECRET || "10191805iP",
     { expiresIn: "2h" }
   );
 
