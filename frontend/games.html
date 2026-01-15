@@ -459,7 +459,7 @@ footer {
 </div>
 
 <div class="search-bar">
-<input type="text" id="searchInput" placeholder="Search games...">
+<input type="text" id="searchInput" placeholder="Search tests...">
 </div>
 
 <div class="game-container" id="games">
@@ -493,13 +493,13 @@ let games = [];
 
 async function fetchGames() {
   const container = document.getElementById('games');
-  container.innerHTML = '<div class="loading">Loading games...</div>';
+  container.innerHTML = '<div class="loading">Loading tests...</div>';
   
   try {
     const res = await fetch(`${API}/games`, {
       headers: token ? { "Content-Type": "application/json", "Authorization": "Bearer " + token } : { "Content-Type": "application/json" }
     });
-    if (!res.ok) throw new Error('Failed to fetch games');
+    if (!res.ok) throw new Error('Failed to fetch tests');
     games = await res.json();
     loadGames(games);
   } catch(err) {
