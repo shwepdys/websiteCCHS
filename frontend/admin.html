@@ -726,43 +726,41 @@ footer {
 <script src="app.js"></script>
 
 <script>
-(() => {
-  const getToken = () => localStorage.getItem("token") || sessionStorage.getItem("token");
+function getToken() {
+  return localStorage.getItem("token") || sessionStorage.getItem("token");
+}
 
+function getUser() {
   const token = getToken();
-  if (!token) {
-    window.location.href = "index.html";
-    return;
-  }
-
-  let payload;
+  if (!token) return null;
   try {
-    payload = JSON.parse(atob(token.split('.')[1]));
-  } catch (e) {
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token");
-    window.location.href = "index.html";
-    return;
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch {
+    return null;
   }
+}
 
-  console.log("JWT payload:", payload);
-
-  if (payload.role !== "admin") {
-    window.location.href = "games.html";
-    return;
+function requireAuth() {
+  const user = getUser();
+  if (!user) {
+    window.location.replace("index.html");
+    return null;
   }
+  return user;
+}
+const user = requireAuth();
 
-  // logout safe
-  const logout = document.getElementById("logoutLink");
-  if (logout) {
-    logout.onclick = e => {
-      e.preventDefault();
-      localStorage.removeItem("token");
-      sessionStorage.removeItem("token");
-      window.location.href = "index.html";
-    };
-  }
-})();
+if (user.role !== "admin") {
+  alert("Admins only.");
+  window.location.replace("index.html");
+}
+
+document.getElementById("logoutLink")?.addEventListener("click", e => {
+  e.preventDefault();
+  localStorage.removeItem("token");
+  sessionStorage.removeItem("token");
+  window.location.replace("index.html");
+});
 </script>
 </body>
 </html>

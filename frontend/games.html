@@ -470,23 +470,29 @@ footer {
 
 <script>
 const API = "https://websitecchs.onrender.com/api";
-let token = localStorage.getItem("token") || sessionStorage.getItem("token");
-let userRole = "user";
-
-try {
-  if (token) {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    userRole = payload.role || "user";
-  } else {
-    // Not logged in → go to login page
-    window.location.href = "index.html";
-  }
-} catch(e) {
-  console.warn("Invalid token, redirecting");
-  localStorage.removeItem("token");
-  sessionStorage.removeItem("token");
-  window.location.href = "index.html";
+function getToken() {
+  return localStorage.getItem("token") || sessionStorage.getItem("token");
 }
+
+function getUser() {
+  const token = getToken();
+  if (!token) return null;
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch {
+    return null;
+  }
+}
+
+function requireAuth() {
+  const user = getUser();
+  if (!user) {
+    window.location.replace("index.html");
+    return null;
+  }
+  return user;
+}
+const user = requireAuth();
 
 let games = [];
 
