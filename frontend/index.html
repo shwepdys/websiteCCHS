@@ -298,15 +298,19 @@ submitBtn.addEventListener("click", async () => {
   }
 });
 
-// Enter key support
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('keypress', e => { if(e.key==='Enter') submitBtn.click(); });
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  const justLoggedOut = sessionStorage.getItem("justLoggedOut");
+  const token = localStorage.getItem("token");
 
-  // Auto redirect if already logged in
-  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-  if(token) window.location.href = "games.html";
+  if (justLoggedOut) {
+    // User just logged out, remove the flag and do not auto-redirect
+    sessionStorage.removeItem("justLoggedOut");
+    return;
+  }
+
+  if (token) {
+    window.location.href = "games.html";
+  }
 });
 </script>
 </body>
