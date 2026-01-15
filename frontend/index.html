@@ -289,7 +289,9 @@ submitBtn.addEventListener("click", async () => {
     if (rememberMe.checked) localStorage.setItem("token", data.token);
     else sessionStorage.setItem("token", data.token);
 
+    // Redirect immediately after login
     window.location.href = "games.html";
+
   } catch (err) {
     errorMessage.textContent = err.message;
     errorMessage.style.display = "block";
@@ -298,17 +300,10 @@ submitBtn.addEventListener("click", async () => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const justLoggedOut = sessionStorage.getItem("justLoggedOut");
-  const token = localStorage.getItem("token");
-
-  if (justLoggedOut) {
-    // User just logged out, remove the flag and do not auto-redirect
-    sessionStorage.removeItem("justLoggedOut");
-    return;
-  }
-
-  if (token) {
+// Auto redirect if already logged in
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+  if(token) {
     window.location.href = "games.html";
   }
 });
