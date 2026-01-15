@@ -726,25 +726,50 @@ footer {
 <script src="app.js"></script>
 
 <script>
+// 1. Get token from localStorage or sessionStorage
 const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
 if (!token) {
-    // No token → go to admin login
-    window.location.href = "index.html"; // or admin-login.html
+  // No token → not logged in
+  window.location.href = "index.html"; // or admin-login.html
 } else {
-    try {
-        // Decode token
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        if (payload.role !== "admin") {
-            alert("You are not authorized to access the admin panel.");
-            window.location.href = "index.html"; // send non-admins back
-        }
-    } catch(e) {
-        console.warn("Invalid token");
-        localStorage.removeItem("token");
-        window.location.href = "index.html";
+  try {
+    // 2. Decode token
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    
+    // 3. Check if role is admin
+    if (payload.role !== "admin") {
+      alert("You are not authorized to access the admin panel.");
+      window.location.href = "index.html"; // redirect non-admin users
     }
+    
+    // 4. If we reach here → logged in as admin, show navbar properly
+    const loginLink = document.getElementById("loginLink");
+    const adminLink = document.getElementById("adminLink");
+    const logoutLink = document.getElementById("logoutLink");
+
+    if (loginLink) loginLink.style.display = "none";
+    if (adminLink) adminLink.style.display = "inline-block";
+    if (logoutLink) logoutLink.style.display = "inline-block";
+
+    // Logout button
+    if (logoutLink) {
+      logoutLink.addEventListener("click", (e)=>{
+        e.preventDefault();
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
+        window.location.href = "index.html";
+      });
+    }
+
+  } catch(e) {
+    console.warn("Invalid token, redirecting");
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+    window.location.href = "index.html";
+  }
 }
+
 </script>
 
 </body>
