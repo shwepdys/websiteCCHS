@@ -93,59 +93,6 @@ body.dark input {
 }
 
 /* ============================================
-   Remember Me Toggle Switch
-============================================ */
-.remember-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 1rem;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 46px;
-  height: 24px;
-}
-
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0;
-  right: 0; bottom: 0;
-  background-color: #ccc;
-  transition: .3s;
-  border-radius: 34px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 18px; width: 18px;
-  left: 3px; bottom: 3px;
-  background-color: white;
-  transition: .3s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #667eea;
-}
-
-input:checked + .slider:before {
-  transform: translateX(22px);
-}
-
-/* ============================================
    Buttons
 ============================================ */
 button {
@@ -208,13 +155,6 @@ body.dark .dark-toggle:hover {
     <span class="toggle-password" id="togglePassword">Show</span>
   </div>
 
-  <div class="remember-wrapper">
-    <span>Remember Me</span>
-    <label class="switch">
-      <input type="checkbox" id="rememberMe">
-      <span class="slider"></span>
-    </label>
-  </div>
 
   <button id="submitBtn">Register</button>
   <span class="toggle-link" id="toggleForm">Already have an account? Login</span>
@@ -230,7 +170,6 @@ const toggleForm = document.getElementById("toggleForm");
 const errorMessage = document.getElementById("errorMessage");
 const passwordInput = document.getElementById("password");
 const togglePassword = document.getElementById("togglePassword");
-const rememberMe = document.getElementById("rememberMe");
 const darkToggle = document.getElementById("darkToggle");
 
 // Dark mode toggle
@@ -285,9 +224,9 @@ submitBtn.addEventListener("click", async () => {
       return;
     }
 
-    // Save token
-    if (rememberMe.checked) localStorage.setItem("token", data.token);
-    else sessionStorage.setItem("token", data.token);
+    // Save token (always localStorage = stable behavior)
+  localStorage.setItem("token", data.token);
+
 
     // Redirect immediately after login
     window.location.href = "games.html";
@@ -301,7 +240,7 @@ submitBtn.addEventListener("click", async () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+  const token = localStorage.getItem("token")
   
   // Update nav links
   const loginLink = document.getElementById('loginLink');
