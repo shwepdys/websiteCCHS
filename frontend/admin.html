@@ -726,50 +726,52 @@ footer {
 <script src="app.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Get token from either storage
-  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+const getToken = () => localStorage.getItem("token") || sessionStorage.getItem("token");
+
+document.addEventListener("DOMContentLoaded", () => {
+  const token = getToken();
 
   if (!token) {
-    // No token → redirect to login
     window.location.href = "index.html";
     return;
   }
 
+  let payload;
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const role = payload.role || "user";
-
-    if (role !== "admin") {
-      // Not admin → redirect to login page
-      alert("You do not have admin access.");
-      window.location.href = "index.html";
-      return;
-    }
-
-    // Admin is logged in → show navbar links correctly
-    const loginLink = document.getElementById("loginLink");
-    const adminLink = document.getElementById("adminLink");
-    const logoutLink = document.getElementById("logoutLink");
-
-    loginLink.style.display = "none";
-    logoutLink.style.display = "inline-block";
-    adminLink.style.display = "inline-block"; // admin link visible
-
+    payload = JSON.parse(atob(token.split('.')[1]));
   } catch (err) {
-    console.warn("Invalid token, redirecting to login");
+    console.error("Invalid token:", err);
     localStorage.removeItem("token");
     sessionStorage.removeItem("token");
     window.location.href = "index.html";
+    return;
   }
-});
 
-// Logout button
-document.getElementById("logoutLink").addEventListener("click", e => {
-  e.preventDefault();
-  localStorage.removeItem("token");
-  sessionStorage.removeItem("token");
-  window.location.href = "index.html";
+  console.log("JWT payload:", payload); // <-- IMPORTANT DEBUG LINE
+
+  if (payload.role !== "admin") {
+    alert("Access denied. Admins only.");
+    window.location.href = "games.html";
+    return;
+  }
+
+  // If admin, allow page
+  const loginLink = document.getElementById("loginLink");
+  const adminLink = document.getElementById("adminLink");
+  const logoutLink = document.getElementById("logoutLink");
+
+  if (loginLink) loginLink.style.display = "none";
+  if (adminLink) adminLink.style.display = "inline-block";
+  if (logoutLink) logoutLink.style.display = "inline-block";
+
+  if (logoutLink) {
+    logoutLink.addEventListener("click", e => {
+      e.preventDefault();
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
+      window.location.href = "index.html";
+    });
+  }
 });
 </script>
 </body>
