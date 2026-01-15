@@ -300,13 +300,42 @@ submitBtn.addEventListener("click", async () => {
   }
 });
 
-// Auto redirect if already logged in
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
+  // Check if token exists
   const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-  if(token) {
-    window.location.href = "games.html";
+
+  // Update nav links immediately
+  const loginLink = document.getElementById('loginLink');
+  const adminLink = document.getElementById('adminLink');
+  const logoutLink = document.getElementById('logoutLink');
+
+  if(token){
+    loginLink.style.display = 'none';
+    logoutLink.style.display = 'inline-block';
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if(payload.role === 'admin') adminLink.style.display = 'inline-block';
+      else adminLink.style.display = 'none';
+    } catch(e){
+      console.warn("Invalid token");
+      adminLink.style.display = 'none';
+    }
+
+    // Redirect only if on login/register form, not immediately after logout
+    if(!sessionStorage.getItem('justLoggedOut')){
+      window.location.href = "games.html";
+    } else {
+      sessionStorage.removeItem('justLoggedOut'); // clear flag
+    }
+  } else {
+    // No token → default nav
+    loginLink.style.display = 'inline-block';
+    adminLink.style.display = 'none';
+    logoutLink.style.display = 'none';
   }
 });
+
 </script>
 </body>
 </html>
