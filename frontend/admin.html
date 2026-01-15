@@ -726,28 +726,25 @@ footer {
 <script src="app.js"></script>
 
 <script>
-  const token = localStorage.getItem('token');
-  if (!token) {
-    // User is not logged in, redirect to login page
-    window.location.href = 'login.html';
-  }
+const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
-  const loginLink = document.getElementById("loginLink");
-  const adminLink = document.getElementById("adminLink");
-  const logoutLink = document.getElementById("logoutLink");
-
-  if (token) {
-    if (loginLink) loginLink.style.display = "none";
-    if (adminLink) adminLink.style.display = "inline-block";
-    if (logoutLink) logoutLink.style.display = "inline-block";
-  }
-
-  if (logoutLink) {
-    logoutLink.addEventListener("click", () => {
-      localStorage.removeItem("token");
-      window.location.href = "index.html";
-    });
-  }
+if (!token) {
+    // No token → go to admin login
+    window.location.href = "index.html"; // or admin-login.html
+} else {
+    try {
+        // Decode token
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (payload.role !== "admin") {
+            alert("You are not authorized to access the admin panel.");
+            window.location.href = "index.html"; // send non-admins back
+        }
+    } catch(e) {
+        console.warn("Invalid token");
+        localStorage.removeItem("token");
+        window.location.href = "index.html";
+    }
+}
 </script>
 
 </body>
