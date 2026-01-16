@@ -423,36 +423,81 @@ footer {
 }
 /* ========== DARK MODE IMPROVEMENTS ========== */
 
-body.dark header {
-  background: #1e1e1e;
+/* ================================
+   REAL DARK MODE FIX FOR HOME
+================================ */
+
+body.dark {
+  background: #0f0f12;
 }
 
+/* Header */
+body.dark header {
+  background: #161616;
+}
+
+/* Logo */
+body.dark .logo {
+  background: none;
+  color: #8ea2ff;
+}
+
+/* Nav links */
 body.dark nav a {
-  color: #f0f0f0;
+  color: #f1f1f1;
 }
 
 body.dark nav a:hover {
   background: rgba(255,255,255,0.08);
 }
 
+/* Page header text */
+body.dark .page-header h1,
+body.dark .page-header p {
+  color: #f5f5f5;
+}
+
+/* Search bar */
 body.dark .search-bar input {
-  background: #2a2a2a;
+  background: #1c1c1c;
   color: white;
 }
 
-body.dark .empty-state {
-  background: #1f1f1f;
+body.dark .search-bar input::placeholder {
+  color: #aaa;
 }
 
-body.dark footer {
-  background: #1e1e1e;
+/* Game cards */
+body.dark .game-card {
+  background: #1a1a1a;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.6);
 }
 
-body.dark .game-description,
 body.dark .game-title {
-  color: #f0f0f0;
+  color: #f5f5f5;
 }
 
+body.dark .game-description {
+  color: #aaa;
+}
+
+/* Category pill */
+body.dark .game-category {
+  background: #2b2b2b;
+  color: #ddd;
+}
+
+/* Empty state */
+body.dark .empty-state {
+  background: #1b1b1b;
+  color: white;
+}
+
+/* Footer */
+body.dark footer {
+  background: #161616;
+  color: #aaa;
+}
 
 .dark-toggle {
     position: fixed;
