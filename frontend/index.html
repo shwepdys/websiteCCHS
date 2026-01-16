@@ -112,38 +112,22 @@ button {
 }
 
 .dark-toggle {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-weight: 600;
-    padding: 0.4rem 0.8rem; /* slightly bigger than before */
-    border-radius: 8px;
-    border: none;
-    background: #f0f0f0;
-    color: #333;
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    font-size: 1.4rem;
     cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.3s;
+    user-select: none;
+    transition: transform 0.2s ease;
 }
 
 .dark-toggle:hover {
-    background: #667eea;
-    color: white;
-}
-
-body.dark .dark-toggle {
-    background: #333;
-    color: #f0f0f0;
-}
-
-body.dark .dark-toggle:hover {
-    background: #764ba2;
-    color: white;
+    transform: scale(1.2);
 }
 </style>
 </head>
 <body>
-<button class="dark-toggle" id="darkToggle">Dark Mode</button>
+<div class="dark-toggle" id="darkToggle">🌙</div>
 
 <div class="form-container">
   <h2 id="formTitle">Register</h2>
@@ -173,7 +157,10 @@ const togglePassword = document.getElementById("togglePassword");
 const darkToggle = document.getElementById("darkToggle");
 
 // Dark mode toggle
-darkToggle.addEventListener('click', () => document.body.classList.toggle('dark'));
+darkToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  darkToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+});
 
 // Show/hide password
 togglePassword.addEventListener('click', () => {
