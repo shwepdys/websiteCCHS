@@ -535,6 +535,15 @@ body.dark footer {
 }
 </style>
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4FWKCJSLBZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4FWKCJSLBZ');
+</script>
 <script>
 let tabStart = Date.now();
 let activeStart = Date.now();
@@ -767,23 +776,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-let totalActive = 0;
-let idleTimer;
-
-function resetActivity() {
-  if (!document.hidden && !isActive) {
-    isActive = true;
-    activeStart = Date.now();
-  }
-
-  clearTimeout(idleTimer);
-  idleTimer = setTimeout(() => {
-    if (isActive) {
-      totalActive += Date.now() - activeStart;
-      isActive = false;
-    }
-  }, 15000);
-}
 
 ["mousemove", "keydown", "click", "scroll"].forEach(e =>
   document.addEventListener(e, resetActivity)

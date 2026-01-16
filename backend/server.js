@@ -52,13 +52,3 @@ app.post("/api/stats/time", async (req, res) => {
     res.sendStatus(400);
   }
 });
-
-app.get("/api/admin/user-times", async (req, res) => {
-  try {
-    const users = await User.find().select("username timeTab timeActive");
-    res.json(users);
-  } catch {
-    res.sendStatus(500);
-  }
-});
-
