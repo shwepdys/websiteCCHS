@@ -223,7 +223,7 @@ submitBtn.addEventListener("click", async () => {
 
 
     // Redirect immediately after login
-    window.location.href = "games.html";
+    window.location.href = "home.html";
 
   } catch (err) {
     errorMessage.textContent = err.message;
@@ -255,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Only redirect if user is trying to access login/register page directly
     if (window.location.pathname.endsWith("index.html") || window.location.pathname.endsWith("/")) {
-      window.location.href = "games.html";
+      window.location.href = "home.html";
     }
 
   } else {
