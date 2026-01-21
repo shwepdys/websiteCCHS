@@ -52,3 +52,16 @@ app.post("/api/stats/time", async (req, res) => {
     res.sendStatus(400);
   }
 });
+
+import rateLimit from "express-rate-limit";
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // max 100 requests per IP per window
+  message: "Too many requests, try again later"
+});
+
+app.use("/api/", limiter);
+
+app.use(express.json({ limit: "10kb" }));
+
