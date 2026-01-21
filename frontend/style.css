@@ -244,22 +244,3 @@
   }
 }
 
-.input-group {
-  position: relative;
-  margin-bottom: 1.8rem;
-}
-
-.hint {
-  font-size: 0.8rem;
-  color: #666;
-  margin-top: 4px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  opacity: 0.85;
-}
-
-.arrow {
-  color: #667eea;
-  font-weight: bold;
-}
