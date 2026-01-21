@@ -5,124 +5,352 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WebsiteCCHS - Register/Login</title>
 <style>
- body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: grid;
-    place-items: center;
-    min-height: 100vh;
-    margin: 0;
-    transition: background 0.3s, color 0.3s;
+/* ============================================
+   Global Styles
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  margin: 0;
+  transition: background 0.3s, color 0.3s;
 }
 
 body.dark {
-    background: #121212;
-    color: #f0f0f0;
+  background: #1a1a2e;
+  color: #f0f0f0;
 }
 
+/* ============================================
+   Form Container
+   ============================================ */
 .form-container {
-    background: white;
-    padding: 2.5rem 2rem;
-    border-radius: 16px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    max-width: 400px;
-    width: 100%;
-    position: relative;
-    transition: background 0.3s, color 0.3s;
+  background: white;
+  padding: 2.5rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 420px;
+  width: 100%;
+  position: relative;
+  transition: background 0.3s, color 0.3s;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 body.dark .form-container {
-    background: #2c2c2c;
-    color: #f0f0f0;
+  background: #2c2c2c;
+  color: #f0f0f0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
 
 h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-size: 2rem;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================
+   Input Fields
+   ============================================ */
+.input-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+body.dark .input-group label {
+  color: #ddd;
 }
 
 input {
-    width: 90%;
-    padding: 0.875rem 1rem;
-    margin-bottom: 1rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    font-size: 1rem;
-    display: block;
-    transition: all 0.3s ease;
-    background: #f8f9fa;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  transform: translateY(-2px);
 }
 
 body.dark input {
-    background: #3a3a3a;
-    color: #f0f0f0;
-    border-color: #555;
+  background: #3a3a3a;
+  color: #f0f0f0;
+  border-color: #555;
 }
 
-.error-message {
-    color: #dc3545;
-    margin-bottom: 1rem;
-    display: none;
+body.dark input:focus {
+  background: #424242;
+  border-color: #667eea;
 }
 
-.toggle-link {
-    display: block;
-    text-align: center;
-    margin-top: 1rem;
-    color: #667eea;
-    cursor: pointer;
+input::placeholder {
+  color: #aaa;
 }
 
+/* ============================================
+   Hints
+   ============================================ */
+.hint {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.4rem;
+  line-height: 1.4;
+}
+
+body.dark .hint {
+  color: #aaa;
+}
+
+.hint::before {
+  content: "💡 ";
+  margin-right: 0.25rem;
+}
+
+/* ============================================
+   Password Wrapper
+   ============================================ */
 .password-wrapper {
-    position: relative;
+  position: relative;
 }
 
 .toggle-password {
-    position: absolute;
-    right: 10%;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: #667eea;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #667eea;
+  font-weight: 600;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.toggle-password:hover {
+  color: #764ba2;
+}
+
+body.dark .toggle-password {
+  color: #8b9cff;
+}
+
+/* ============================================
+   Messages
+   ============================================ */
+.error-message {
+  color: #dc3545;
+  padding: 0.75rem;
+  background: #ffe6e6;
+  border-left: 4px solid #dc3545;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  display: none;
+  animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+body.dark .error-message {
+  background: #3d1f1f;
+  color: #ff6b6b;
 }
 
 /* ============================================
    Buttons
-============================================ */
+   ============================================ */
 button {
-    width: 99%;
-    padding: 1rem;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    font-weight: 700;
-    cursor: pointer;
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Dark Mode Button */
-.form-container {
-  position: relative; /* needed for absolute positioning of button */
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
 }
 
+button:hover::before {
+  left: 100%;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+
+button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================
+   Toggle Link
+   ============================================ */
+.toggle-link {
+  display: block;
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #667eea;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.toggle-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+body.dark .toggle-link {
+  color: #8b9cff;
+}
+
+/* ============================================
+   Dark Mode Toggle
+   ============================================ */
 .dark-toggle {
-    position: fixed;
-    top: 15px;
-    right: 20px;
-    font-size: 1.4rem;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.2s ease;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 1.8rem;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease;
+  background: rgba(255, 255, 255, 0.9);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+body.dark .dark-toggle {
+  background: rgba(44, 44, 44, 0.9);
 }
 
 .dark-toggle:hover {
-    transform: scale(1.2);
+  transform: scale(1.1) rotate(20deg);
+}
+
+.dark-toggle:active {
+  transform: scale(0.95);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 480px) {
+  .form-container {
+    padding: 2rem 1.5rem;
+    margin: 1rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  input {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  button {
+    padding: 0.875rem;
+    font-size: 1rem;
+  }
+
+  .dark-toggle {
+    width: 45px;
+    height: 45px;
+    font-size: 1.5rem;
+    top: 15px;
+    right: 15px;
+  }
+
+  .hint {
+    font-size: 0.8rem;
+  }
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 </style>
 </head>
@@ -208,12 +436,20 @@ resetIdleTimer();
   <h2 id="formTitle">Register</h2>
   <div class="error-message" id="errorMessage"></div>
 
-  <input type="text" id="username" placeholder="Enter your email">
-  <div class="password-wrapper">
-    <input type="password" id="password" placeholder="Enter your password">
-    <span class="toggle-password" id="togglePassword">Show</span>
+  <div class="input-group">
+    <label for="username">Email</label>
+    <input type="text" id="username" placeholder="Enter your email">
+    <span class="hint">Enter any of your emails</span>
   </div>
 
+  <div class="input-group">
+    <label for="password">Password</label>
+    <div class="password-wrapper">
+      <input type="password" id="password" placeholder="Enter your password">
+      <span class="toggle-password" id="togglePassword">Show</span>
+    </div>
+    <span class="hint">Enter any password (minimum length 6)</span>
+  </div>
 
   <button id="submitBtn">Register</button>
   <span class="toggle-link" id="toggleForm">Already have an account? Login</span>
@@ -246,9 +482,9 @@ darkToggle.addEventListener('click', () => {
 
 // Show/hide password
 togglePassword.addEventListener('click', () => {
-    const type = passwordInput.type === 'password' ? 'text' : 'password';
-    passwordInput.type = type;
-    togglePassword.textContent = type === 'password' ? 'Show' : 'Hide';
+  const type = passwordInput.type === 'password' ? 'text' : 'password';
+  passwordInput.type = type;
+  togglePassword.textContent = type === 'password' ? 'Show' : 'Hide';
 });
 
 // Toggle register/login form
@@ -268,6 +504,12 @@ submitBtn.addEventListener("click", async () => {
 
   if (!username || !password) {
     errorMessage.textContent = "Email and password required";
+    errorMessage.style.display = "block";
+    return;
+  }
+
+  if (password.length < 6) {
+    errorMessage.textContent = "Password must be at least 6 characters";
     errorMessage.style.display = "block";
     return;
   }
@@ -293,9 +535,8 @@ submitBtn.addEventListener("click", async () => {
       return;
     }
 
-    // Save token (always localStorage = stable behavior)
-  localStorage.setItem("token", data.token);
-
+    // Save token
+    localStorage.setItem("token", data.token);
 
     // Redirect immediately after login
     window.location.href = "home.html";
@@ -308,68 +549,22 @@ submitBtn.addEventListener("click", async () => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const token = localStorage.getItem("token")
-  
-  // Update nav links
-  const loginLink = document.getElementById('loginLink');
-  const adminLink = document.getElementById('adminLink');
-  const logoutLink = document.getElementById('logoutLink');
+// Allow Enter key to submit
+document.addEventListener('DOMContentLoaded', () => {
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => {
+    input.addEventListener('keypress', e => {
+      if (e.key === 'Enter') submitBtn.click();
+    });
+  });
 
-  if (token) {
-    loginLink.style.display = 'none';
-    logoutLink.style.display = 'inline-block';
-
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      adminLink.style.display = payload.role === 'admin' ? 'inline-block' : 'none';
-    } catch(e){
-      console.warn("Invalid token");
-      adminLink.style.display = 'none';
-    }
-
-    // Only redirect if user is trying to access login/register page directly
-    if (window.location.pathname.endsWith("index.html") || window.location.pathname.endsWith("/")) {
-      window.location.href = "home.html";
-    }
-
-  } else {
-    // Not logged in
-    loginLink.style.display = 'inline-block';
-    adminLink.style.display = 'none';
-    logoutLink.style.display = 'none';
-  }
-});
-
-["mousemove", "keydown", "click", "scroll"].forEach(e =>
-  document.addEventListener(e, resetActivity)
-);
-
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden && isActive) {
-    totalActive += Date.now() - activeStart;
-    isActive = false;
-  } else if (!document.hidden) {
-    resetActivity();
-  }
-});
-
-window.addEventListener("beforeunload", () => {
   const token = localStorage.getItem("token");
-  if (!token) return;
-
-  const tabTime = Math.floor((Date.now() - tabStart) / 1000);
-  const activeTime = Math.floor(
-    (totalActive + (isActive ? Date.now() - activeStart : 0)) / 1000
-  );
-
-  navigator.sendBeacon(
-    "https://websitecchs.onrender.com/api/stats/time",
-    JSON.stringify({ token, tabTime, activeTime })
-  );
+  
+  // Only redirect if user is trying to access login/register page directly
+  if (token && (window.location.pathname.endsWith("index.html") || window.location.pathname.endsWith("/"))) {
+    window.location.href = "home.html";
+  }
 });
-
-resetActivity();
 </script>
 </body>
 </html>
