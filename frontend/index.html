@@ -380,6 +380,29 @@ window.addEventListener("beforeunload", () => {
 });
 
 resetActivity();
+
+function positionHints() {
+  const email = document.getElementById("username");
+  const password = document.getElementById("password");
+
+  const emailHint = document.getElementById("emailHint");
+  const passwordHint = document.getElementById("passwordHint");
+
+  const emailRect = email.getBoundingClientRect();
+  const passRect = password.getBoundingClientRect();
+
+  emailHint.style.top = emailRect.top + window.scrollY + 10 + "px";
+  emailHint.style.left = emailRect.right + 15 + "px";
+
+  passwordHint.style.top = passRect.top + window.scrollY + 10 + "px";
+  passwordHint.style.left = passRect.right + 15 + "px";
+}
+
+// Run on load and resize
+window.addEventListener("load", positionHints);
+window.addEventListener("resize", positionHints);
+window.addEventListener("scroll", positionHints);
+
 </script>
 </body>
 </html>

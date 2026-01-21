@@ -244,38 +244,6 @@
   }
 }
 
-.form-container {
-  position: relative; /* already present, required for positioning */
-}
-
-.side-hint {
-  position: absolute;
-  right: -220px; /* pushes text outside the card */
-  color: #aaa;
-  font-size: 0.85rem;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.hint-email {
-  top: 115px; /* aligns with email input */
-}
-
-.hint-password {
-  top: 185px; /* aligns with password input */
-}
-
-.side-hint span {
-  font-size: 1rem;
-  color: #667eea;
-}
-
-body.dark .side-hint {
-  color: #bbb;
-}
-
 .side-hint {
   position: fixed;              /* overlay, not part of layout */
   right: 8%;                    /* distance from right side of screen */
@@ -303,5 +271,18 @@ body.dark .side-hint {
 }
 
 body.dark .side-hint {
+  color: #aaa;
+}
+
+.floating-hint {
+  position: fixed;
+  color: #bbb;
+  font-size: 0.9rem;
+  z-index: 9999;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+body.dark .floating-hint {
   color: #aaa;
 }
