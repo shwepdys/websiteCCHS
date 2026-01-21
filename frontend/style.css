@@ -244,14 +244,34 @@
   }
 }
 
-.hint-text {
-  font-size: 0.75rem;
-  color: #777;
-  margin-top: -8px;
-  margin-bottom: 12px;
-  padding-left: 4px;
+.form-container {
+  position: relative; /* already present, required for positioning */
 }
 
-body.dark .hint-text {
+.side-hint {
+  position: absolute;
+  right: -220px; /* pushes text outside the card */
   color: #aaa;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hint-email {
+  top: 115px; /* aligns with email input */
+}
+
+.hint-password {
+  top: 185px; /* aligns with password input */
+}
+
+.side-hint span {
+  font-size: 1rem;
+  color: #667eea;
+}
+
+body.dark .side-hint {
+  color: #bbb;
 }

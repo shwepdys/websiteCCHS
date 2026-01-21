@@ -204,19 +204,24 @@ resetIdleTimer();
 <body>
 <div class="dark-toggle" id="darkToggle">🌙</div>
 
+<div class="side-hint hint-email">
+  <span>←</span> Enter any of your email
+</div>
+
+<div class="side-hint hint-password">
+  <span>←</span> Enter any password (min 6 characters)
+</div>
+
+
 <div class="form-container">
   <h2 id="formTitle">Register</h2>
   <div class="error-message" id="errorMessage"></div>
 
   <input type="text" id="username" placeholder="Enter your email">
-  <div class="hint-text">➜ Enter any of your email</div>
-
-    <div class="password-wrapper">
+  <div class="password-wrapper">
     <input type="password" id="password" placeholder="Enter your password">
     <span class="toggle-password" id="togglePassword">Show</span>
-    </div>
-    <div class="hint-text">➜ Enter any password (at least 6 characters)</div>
-
+  </div>
 
 
   <button id="submitBtn">Register</button>
